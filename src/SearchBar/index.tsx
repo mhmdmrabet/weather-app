@@ -6,7 +6,7 @@ export function SearchBar() {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 1, width: 400 },
+        "& .MuiTextField-root": { m: 1, width: 350 },
       }}
       noValidate
       autoComplete="off"

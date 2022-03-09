@@ -13,7 +13,12 @@ export const weatherApi = createApi({
     getWeatherByCity: builder.query({
       query: (city) => `weather/${city}`,
     }),
+    getWeatherByUserLocation: builder.query({
+      query: ({ longitude, latitude }) =>
+        `weather?lon=${longitude}&lat=${latitude}`,
+    }),
   }),
 });
 
-export const { useGetWeatherByCityQuery } = weatherApi;
+export const { useGetWeatherByCityQuery, useGetWeatherByUserLocationQuery } =
+  weatherApi;
