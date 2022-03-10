@@ -61,7 +61,7 @@ export default function Weather() {
         <>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {data.name}, le {myDate}
+              À {data.name}, le {myDate}
             </Typography>
             <Box sx={{ textAlign: "center", my: 5 }}>
               <Box
@@ -71,8 +71,8 @@ export default function Weather() {
               />
             </Box>
           </CardContent>
-          <CardActions sx={{ flexDirection: "row-reverse" }}>
-            <Button size="medium" variant="contained">
+          <CardActions sx={{ justifyContent: "end" }}>
+            <Button disabled size="small" variant="contained" color="secondary">
               Ajouter a vos favoris
             </Button>
           </CardActions>

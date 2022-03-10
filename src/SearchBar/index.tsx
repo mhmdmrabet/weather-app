@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
@@ -6,20 +7,31 @@ export function SearchBar() {
     <Box
       component="form"
       sx={{
-        "& .MuiTextField-root": { m: 1, width: 350 },
+        m: 1,
+        width: 350,
+        display: "flex",
+        flexDirection: "column",
+        gap: 1,
       }}
-      noValidate
-      autoComplete="off"
     >
-      <div>
-        <TextField
-          label="Ville"
-          id="outlined-size-normal"
-          placeholder="Entrez le nom d'une ville ..."
-          fullWidth
-          size="medium"
-        />
-      </div>
+      <TextField
+        label="Ville"
+        id="outlined-size-normal"
+        placeholder="Entrez le nom d'une ville ..."
+        fullWidth
+        size="medium"
+      />
+      <Box
+        sx={{
+          display: "inline-flex",
+          flexDirection: "column-reverse",
+        }}
+      >
+        {/* TODO Add loading style */}
+        <Button variant="contained" color="success">
+          Soumettre
+        </Button>
+      </Box>
     </Box>
   );
 }
