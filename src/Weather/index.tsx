@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, LinearProgress } from "@mui/material";
 import { useState, useEffect } from "react";
+import { flexbox } from "@mui/system";
 interface IState {
   status: "pending" | "resolved" | "rejected" | "idle";
   weather: any | null;
@@ -42,9 +43,7 @@ export default function Weather({
           const result = await response.json();
           setState({ ...state, weather: result, status: "resolved" });
         } else {
-          return Promise.reject(
-            new Error(`No weather found with the city "${cityName}" `)
-          );
+          throw new Error("Weather not found");
         }
       } catch (error) {
         setState({ ...state, error, status: "rejected" });
@@ -68,9 +67,7 @@ export default function Weather({
           const result = await response.json();
           setState({ ...state, weather: result, status: "resolved" });
         } else {
-          return Promise.reject(
-            new Error(`No weather found with the city "${cityName}" `)
-          );
+          throw new Error("Weather not found");
         }
       } catch (error) {
         setState({ ...state, error, status: "rejected" });
@@ -125,9 +122,10 @@ export default function Weather({
       );
       break;
     case "rejected":
-      throw error;
+      component = <></>;
+      break;
     case "idle":
-      component = "Submit a pokemon";
+      component = "Submit a city";
       break;
     default:
       break;

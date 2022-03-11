@@ -7,9 +7,10 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [cityName, setCityName] = useState("");
+
   const [geoCoords, setgeoCoords] = useState({
-    latitude: 0,
-    longitude: 0,
+    latitude: 48.856614,
+    longitude: 2.3522219,
   });
 
   function handleSubmit(newCityName: string) {
