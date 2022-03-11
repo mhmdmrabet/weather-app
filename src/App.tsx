@@ -4,9 +4,8 @@ import { Navbar } from "./Navbar";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
 import { SearchBar, WeatherInfo } from "./Weather";
-import { SignIn, SignUp } from "./Auth";
+import { RequireAuth, SignIn, SignUp } from "./Auth";
 import { Favorites } from "./Favorites";
-import { Button } from "@mui/material";
 
 function App() {
   const [cityName, setCityName] = useState("");
@@ -83,7 +82,14 @@ function App() {
               path="/signup"
               element={<SignUp setUserToken={setUserToken} />}
             />
-            <Route path="/favorites" element={<Favorites />} />
+            <Route
+              path="/favorites"
+              element={
+                <RequireAuth userToken={userToken}>
+                  <Favorites />
+                </RequireAuth>
+              }
+            ></Route>
           </Routes>
         </Box>
       </main>

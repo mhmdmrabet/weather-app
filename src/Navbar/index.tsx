@@ -11,6 +11,7 @@ export const Navbar = ({
 }) => {
   async function logout() {
     const token = window.localStorage.getItem("token");
+    if (!token) return;
     setUserToken("");
     try {
       await axios.delete(
