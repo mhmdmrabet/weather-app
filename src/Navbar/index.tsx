@@ -1,7 +1,29 @@
 import { Link } from "react-router-dom";
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { Thermostat } from "@mui/icons-material";
-export const Navbar = ({ user }: { user: string }) => {
+import axios from "axios";
+export const Navbar = ({
+  user,
+  setUserToken,
+}: {
+  user: string;
+  setUserToken: (token: string) => void;
+}) => {
+  async function logout() {
+    const token = window.localStorage.getItem("token");
+    setUserToken("");
+    try {
+      await axios.delete(
+        `https://weather-app-back-powerz.herokuapp.com/api/v1/logout`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleLogout = () => logout();
+
   return (
     <nav>
       <Box sx={{ flexGrow: 1 }}>
@@ -24,7 +46,7 @@ export const Navbar = ({ user }: { user: string }) => {
               WeatherApp
             </Typography>
             {user ? (
-              <Button color="inherit" onClick={() => {}}>
+              <Button color="inherit" onClick={handleLogout}>
                 Logout
               </Button>
             ) : (

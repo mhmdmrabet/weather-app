@@ -43,7 +43,7 @@ function App() {
   return (
     <>
       <header>
-        <Navbar user={userToken} />
+        <Navbar user={userToken} setUserToken={setUserToken} />
       </header>
       <main>
         <Box
@@ -70,7 +70,10 @@ function App() {
               path="/login"
               element={<SignIn setUserToken={setUserToken} />}
             />
-            <Route path="/signup" element={<SignUp />} />
+            <Route
+              path="/signup"
+              element={<SignUp setUserToken={setUserToken} />}
+            />
           </Routes>
         </Box>
       </main>

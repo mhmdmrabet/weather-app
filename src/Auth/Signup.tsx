@@ -21,7 +21,11 @@ type IFormInput = {
   password: string;
 };
 
-export function SignUp() {
+export function SignUp({
+  setUserToken,
+}: {
+  setUserToken: (token: string) => void;
+}) {
   let navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -35,6 +39,7 @@ export function SignUp() {
         data
       );
       if (response.status === 201) {
+        setUserToken(response.data.token);
         navigate("/");
       } else {
         throw new Error("Error");
