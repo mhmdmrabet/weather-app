@@ -8,7 +8,13 @@ import { SignIn, SignUp } from "./Auth";
 
 function App() {
   const [cityName, setCityName] = useState("");
-  const [user, SetUser] = useState("");
+  const [userToken, setUserToken] = useState(
+    () => window.localStorage.getItem("token") ?? ""
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem("token", userToken);
+  }, [userToken]);
 
   const [geoCoords, setgeoCoords] = useState({
     latitude: 0,
@@ -37,7 +43,7 @@ function App() {
   return (
     <>
       <header>
-        <Navbar user={user} />
+        <Navbar user={userToken} />
       </header>
       <main>
         <Box
@@ -60,7 +66,10 @@ function App() {
                 </>
               }
             />
-            <Route path="/login" element={<SignIn />} />
+            <Route
+              path="/login"
+              element={<SignIn setUserToken={setUserToken} />}
+            />
             <Route path="/signup" element={<SignUp />} />
           </Routes>
         </Box>

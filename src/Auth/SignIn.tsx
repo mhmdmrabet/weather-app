@@ -21,20 +21,25 @@ type IFormInput = {
   password: string;
 };
 
-export function SignIn() {
+export function SignIn({
+  setUserToken,
+}: {
+  setUserToken: (token: string) => void;
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const [error, setError] = useState(false);
 
   let navigate = useNavigate();
 
-  async function signup(data: { email: string; password: string }) {
+  async function signIn(data: { email: string; password: string }) {
     try {
       const response = await axios.post(
         `https://weather-app-back-powerz.herokuapp.com/api/v1/login`,
         data
       );
       if (response.status === 200) {
+        setUserToken(response.data.token);
         navigate("/");
       } else {
         throw new Error("Error");
@@ -52,7 +57,7 @@ export function SignIn() {
     reset,
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
-    signup(data);
+    signIn(data);
   };
 
   return (
