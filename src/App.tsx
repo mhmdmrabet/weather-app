@@ -30,7 +30,7 @@ function App() {
 
   useEffect(() => {
     getLocation();
-  }, []);
+  }, [geoCoords]);
 
   return (
     <>
