@@ -42,16 +42,27 @@ export const Navbar = ({
               component={Link}
               to={"/"}
             >
-              <Thermostat sx={{ mr: 1 }} />
-              WeatherApp
+              <Thermostat sx={{ mr: 1, fontSize: { sm: "1.5em" } }} />
+              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+                WeatherApp
+              </Box>
             </Typography>
+            {user && (
+              <>
+                <Button color="inherit" component={Link} to={"/favorites"}>
+                  vos favoris
+                </Button>
+                <Typography> | </Typography>
+              </>
+            )}
+
             {user ? (
               <Button color="inherit" onClick={handleLogout}>
-                Logout
+                Déconnexion
               </Button>
             ) : (
               <Button color="inherit" component={Link} to={"/login"}>
-                Login
+                Connexion
               </Button>
             )}
           </Toolbar>
