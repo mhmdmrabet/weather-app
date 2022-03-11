@@ -4,7 +4,7 @@ import { Navbar } from "./Navbar";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
 import { SearchBar, WeatherInfo } from "./Weather";
-import { Login } from "./Auth";
+import { Login, SignIn, SignUp } from "./Auth";
 
 function App() {
   const [cityName, setCityName] = useState("");
@@ -60,7 +60,8 @@ function App() {
                 </>
               }
             />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
         </Box>
       </main>
