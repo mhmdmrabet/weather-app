@@ -12,7 +12,7 @@ interface IState {
   error: unknown | null;
 }
 
-export default function Weather({
+export function WeatherInfo({
   cityName,
   geoCoords,
 }: {

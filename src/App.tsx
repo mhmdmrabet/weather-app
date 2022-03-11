@@ -1,12 +1,14 @@
+import { Routes, Route } from "react-router-dom";
 import { Box } from "@mui/system";
 import { Navbar } from "./Navbar";
-import { SearchBar } from "./SearchBar";
-import Weather from "./Weather";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
+import { SearchBar, WeatherInfo } from "./Weather";
+import { Login } from "./Auth";
 
 function App() {
   const [cityName, setCityName] = useState("");
+  const [user, SetUser] = useState("");
 
   const [geoCoords, setgeoCoords] = useState({
     latitude: 0,
@@ -35,7 +37,7 @@ function App() {
   return (
     <>
       <header>
-        <Navbar />
+        <Navbar user={user} />
       </header>
       <main>
         <Box
@@ -48,8 +50,18 @@ function App() {
           minHeight="100vh"
           bgcolor={blue[50]}
         >
-          <SearchBar cityName={cityName} onSubmit={handleSubmit} />
-          <Weather cityName={cityName} geoCoords={geoCoords} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <SearchBar cityName={cityName} onSubmit={handleSubmit} />
+                  <WeatherInfo cityName={cityName} geoCoords={geoCoords} />
+                </>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+          </Routes>
         </Box>
       </main>
     </>
