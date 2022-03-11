@@ -1,4 +1,5 @@
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import Button from "@mui/material/Button";
@@ -10,7 +11,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { IconButton, InputAdornment } from "@mui/material";
+import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const theme = createTheme();
@@ -23,13 +24,37 @@ type IFormInput = {
 export function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const [error, setError] = useState(false);
+
+  let navigate = useNavigate();
+
+  async function signup(data: { email: string; password: string }) {
+    try {
+      const response = await axios.post(
+        `https://weather-app-back-powerz.herokuapp.com/api/v1/login`,
+        data
+      );
+      if (response.status === 200) {
+        navigate("/");
+      } else {
+        throw new Error("Error");
+      }
+    } catch (error) {
+      setError(true);
+      reset({ email: "", password: "" });
+    }
+  }
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data: any) => console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
+    signup(data);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -111,6 +136,11 @@ export function SignIn() {
           </Box>
         </Box>
       </Container>
+      {error && (
+        <Alert severity="error" color="error">
+          This is a error alert — check it out!
+        </Alert>
+      )}
     </ThemeProvider>
   );
 }

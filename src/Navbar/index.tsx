@@ -24,7 +24,9 @@ export const Navbar = ({ user }: { user: string }) => {
               WeatherApp
             </Typography>
             {user ? (
-              <Button color="inherit">Logout</Button>
+              <Button color="inherit" onClick={() => {}}>
+                Logout
+              </Button>
             ) : (
               <Button color="inherit" component={Link} to={"/login"}>
                 Login
