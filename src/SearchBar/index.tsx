@@ -1,10 +1,22 @@
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
 
 export function SearchBar() {
+  const [city, setCity] = useState("");
+  const [searchedCity, setSearchedCity] = useState("");
+
   return (
     <Box
+      onSubmit={(event: React.SyntheticEvent) => {
+        event.preventDefault();
+        const target = event.target as typeof event.target & {
+          city: { value: string };
+        };
+        setSearchedCity(target.city.value);
+        setCity("");
+      }}
       component="form"
       sx={{
         m: 1,
@@ -20,6 +32,11 @@ export function SearchBar() {
         placeholder="Entrez le nom d'une ville ..."
         fullWidth
         size="medium"
+        value={city}
+        name="city"
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setCity(event.target.value);
+        }}
       />
       <Box
         sx={{
@@ -27,8 +44,7 @@ export function SearchBar() {
           flexDirection: "column-reverse",
         }}
       >
-        {/* TODO Add loading style */}
-        <Button variant="contained" color="success">
+        <Button type="submit" variant="contained" color="success">
           Soumettre
         </Button>
       </Box>
