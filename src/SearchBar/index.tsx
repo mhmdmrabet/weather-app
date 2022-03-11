@@ -1,22 +1,38 @@
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export function SearchBar() {
-  const [city, setCity] = useState("");
-  const [searchedCity, setSearchedCity] = useState("");
+export function SearchBar({
+  cityName: externalCityName,
+  onSubmit,
+}: {
+  cityName: string;
+  onSubmit: (cityName: string) => void;
+}) {
+  const initialCityName = externalCityName || "";
+
+  const [cityName, setCityName] = useState(initialCityName);
+
+  useEffect(() => {
+    if (typeof externalCityName === "string") {
+      setCityName(externalCityName);
+    }
+  }, [externalCityName]);
+
+  function handleSubmit(event: React.SyntheticEvent) {
+    event.preventDefault();
+    onSubmit(cityName);
+    setCityName("");
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setCityName(event.target.value);
+  }
 
   return (
     <Box
-      onSubmit={(event: React.SyntheticEvent) => {
-        event.preventDefault();
-        const target = event.target as typeof event.target & {
-          city: { value: string };
-        };
-        setSearchedCity(target.city.value);
-        setCity("");
-      }}
+      onSubmit={handleSubmit}
       component="form"
       sx={{
         m: 1,
@@ -32,11 +48,9 @@ export function SearchBar() {
         placeholder="Entrez le nom d'une ville ..."
         fullWidth
         size="medium"
-        value={city}
+        value={cityName}
         name="city"
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setCity(event.target.value);
-        }}
+        onChange={handleChange}
       />
       <Box
         sx={{
@@ -44,7 +58,12 @@ export function SearchBar() {
           flexDirection: "column-reverse",
         }}
       >
-        <Button type="submit" variant="contained" color="success">
+        <Button
+          type="submit"
+          variant="contained"
+          color="success"
+          disabled={!cityName.length}
+        >
           Soumettre
         </Button>
       </Box>
