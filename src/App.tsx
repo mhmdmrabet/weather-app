@@ -9,8 +9,8 @@ function App() {
   const [cityName, setCityName] = useState("");
 
   const [geoCoords, setgeoCoords] = useState({
-    latitude: 48.856614,
-    longitude: 2.3522219,
+    latitude: 0,
+    longitude: 0,
   });
 
   function handleSubmit(newCityName: string) {
@@ -30,7 +30,7 @@ function App() {
 
   useEffect(() => {
     getLocation();
-  }, [geoCoords]);
+  }, []);
 
   return (
     <>
