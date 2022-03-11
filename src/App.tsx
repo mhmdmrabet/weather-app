@@ -4,7 +4,7 @@ import { Navbar } from "./Navbar";
 import { blue } from "@mui/material/colors";
 import { useState, useEffect } from "react";
 import { SearchBar, WeatherInfo } from "./Weather";
-import { Login, SignIn, SignUp } from "./Auth";
+import { SignIn, SignUp } from "./Auth";
 
 function App() {
   const [cityName, setCityName] = useState("");
