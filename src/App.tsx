@@ -14,6 +14,9 @@ function App() {
 
   useEffect(() => {
     window.localStorage.setItem("token", userToken);
+    if (userToken) {
+      console.log("test");
+    }
   }, [userToken]);
 
   const [geoCoords, setgeoCoords] = useState({
@@ -62,7 +65,11 @@ function App() {
               element={
                 <>
                   <SearchBar cityName={cityName} onSubmit={handleSubmit} />
-                  <WeatherInfo cityName={cityName} geoCoords={geoCoords} />
+                  <WeatherInfo
+                    cityName={cityName}
+                    geoCoords={geoCoords}
+                    userToken={userToken}
+                  />
                 </>
               }
             />

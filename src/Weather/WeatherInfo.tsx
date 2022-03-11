@@ -15,12 +15,14 @@ interface IState {
 export function WeatherInfo({
   cityName,
   geoCoords,
+  userToken,
 }: {
   cityName: string;
   geoCoords: {
     longitude: number;
     latitude: number;
   };
+  userToken: string;
 }) {
   const [state, setState] = useState<IState>({
     status: cityName ? "pending" : "idle",
@@ -114,7 +116,12 @@ export function WeatherInfo({
             </Box>
           </CardContent>
           <CardActions sx={{ justifyContent: "end" }}>
-            <Button disabled size="small" variant="contained" color="secondary">
+            <Button
+              disabled={userToken ? false : true}
+              size="small"
+              variant="contained"
+              color="info"
+            >
               Ajouter a vos favoris
             </Button>
           </CardActions>
