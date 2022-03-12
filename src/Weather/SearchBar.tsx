@@ -6,7 +6,6 @@ import { useState } from "react";
 export function SearchBar({
   onSubmit,
 }: {
-  cityName: string;
   onSubmit: (cityName: string) => void;
 }) {
   const initialCityName = "";
