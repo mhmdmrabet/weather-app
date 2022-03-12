@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { Thermostat } from "@mui/icons-material";
 import axios from "axios";
+import { URL_BACK } from "../utils/urlBack";
 export const Navbar = ({
   user,
   setUserToken,
@@ -14,10 +15,9 @@ export const Navbar = ({
     if (!token) return;
     setUserToken("");
     try {
-      await axios.delete(
-        `https://weather-app-back-powerz.herokuapp.com/api/v1/logout`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await axios.delete(`${URL_BACK}/logout`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
     } catch (error) {
       console.log(error);
     }

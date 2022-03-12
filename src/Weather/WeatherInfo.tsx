@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Box, LinearProgress } from "@mui/material";
 import { useState, useEffect } from "react";
 import { flexbox } from "@mui/system";
+import { URL_BACK } from "../utils/urlBack";
 interface IState {
   status: "pending" | "resolved" | "rejected" | "idle";
   weather: any | null;
@@ -39,7 +40,7 @@ export function WeatherInfo({
       try {
         setState({ ...state, status: "pending" });
         const response = await fetch(
-          `https://weather-app-back-powerz.herokuapp.com/api/v1/weather/?lon=${longitude}&lat=${latitude}`
+          `${URL_BACK}/weather/?lon=${longitude}&lat=${latitude}`
         );
         if (response.ok) {
           const result = await response.json();
@@ -62,9 +63,7 @@ export function WeatherInfo({
     async function effect() {
       try {
         setState({ ...state, status: "pending" });
-        const response = await fetch(
-          `https://weather-app-back-powerz.herokuapp.com/api/v1/weather/${cityName}`
-        );
+        const response = await fetch(`${URL_BACK}/weather/${cityName}`);
         if (response.ok) {
           const result = await response.json();
           setState({ ...state, weather: result, status: "resolved" });

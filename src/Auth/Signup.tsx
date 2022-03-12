@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import axios from "axios";
+import { URL_BACK } from "../utils/urlBack";
 
 const theme = createTheme();
 
@@ -34,10 +35,7 @@ export function SignUp({
 
   async function signup(data: { email: string; password: string }) {
     try {
-      const response = await axios.post(
-        `https://weather-app-back-powerz.herokuapp.com/api/v1/register`,
-        data
-      );
+      const response = await axios.post(`${URL_BACK}/signup`, data);
       if (response.status === 201) {
         setUserToken(response.data.token);
         navigate("/");
