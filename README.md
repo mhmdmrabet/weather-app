@@ -52,6 +52,6 @@ App allowing to search weather infos.
 
 M'rabet Mohamed - [@MrabetMohamed94](https://twitter.com/MrabetMohamed94) - mhmdmrabet@yahoo.fr
 
-Project Link: [https://whichmovie-one.vercel.app/](https://weather-app-pied-omega.vercel.app/)
+Project Link: [WEATHER APP](https://weather-app-pied-omega.vercel.app/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
