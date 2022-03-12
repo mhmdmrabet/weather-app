@@ -56,6 +56,7 @@ export function WeatherInfo({
       }
     }
     effect();
+    return;
   }, [geoCoords]);
 
   useEffect(() => {
@@ -78,6 +79,7 @@ export function WeatherInfo({
       }
     }
     effect();
+    return;
   }, [cityName]);
 
   const addFavorite = async () => {
@@ -86,7 +88,7 @@ export function WeatherInfo({
     try {
       await axios.request({
         method: "POST",
-        url: `${URL_BACK}/users/cities/${weather?.name}`,
+        url: `${URL_BACK}/users/cities/${weather?.location.id}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -121,20 +123,20 @@ export function WeatherInfo({
         <>
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {weather?.name}, le {myDate}
+              {weather?.location.name}, le {myDate}
             </Typography>
             <Box sx={{ textAlign: "center", my: 5 }}>
               <Box
                 component="img"
                 alt="The house from the offer."
-                src={`https://openweathermap.org/img/wn/${weather?.weather[0].icon}@2x.png`}
+                src={`https://openweathermap.org/img/wn/${weather?.weather.icon}@2x.png`}
               />
             </Box>
             <Box>
               <Typography gutterBottom variant="h6" component="div">
                 Temperature actuel :{" "}
                 <span style={{ fontWeight: "bold" }}>
-                  {Math.round(weather?.main.temp)}°
+                  {Math.round(weather?.weather.temperature)}°
                 </span>
               </Typography>
             </Box>

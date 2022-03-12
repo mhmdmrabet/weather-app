@@ -16,7 +16,7 @@ interface IState {
   error: unknown | null;
 }
 
-export function Favorites() {
+export function Favorites({ onClick }: { onClick: (name: string) => void }) {
   let navigate = useNavigate();
 
   const [state, setState] = useState<IState>({
@@ -46,6 +46,7 @@ export function Favorites() {
       }
     }
     effect();
+    return;
   }, []);
 
   const deleteFavorite = async (id: number) => {
@@ -83,6 +84,10 @@ export function Favorites() {
     case "resolved":
       component = cities?.map(({ id, name }: { id: number; name: string }) => (
         <ListItem
+          onClick={() => {
+            onClick(name);
+            navigate("/");
+          }}
           secondaryAction={
             <IconButton
               edge="end"

@@ -15,9 +15,6 @@ function App() {
 
   useEffect(() => {
     window.localStorage.setItem("token", userToken);
-    if (userToken) {
-      console.log("test");
-    }
   }, [userToken]);
 
   const [geoCoords, setgeoCoords] = useState({
@@ -42,6 +39,7 @@ function App() {
 
   useEffect(() => {
     getLocation();
+    return;
   }, []);
 
   return (
@@ -86,7 +84,7 @@ function App() {
               path="/favorites"
               element={
                 <RequireAuth userToken={userToken}>
-                  <Favorites />
+                  <Favorites onClick={handleSubmit} />
                 </RequireAuth>
               }
             ></Route>
