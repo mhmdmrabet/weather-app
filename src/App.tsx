@@ -65,7 +65,7 @@ function App() {
               path="/"
               element={
                 <>
-                  <SearchBar cityName={cityName} onSubmit={handleSubmit} />
+                  <SearchBar onSubmit={handleSubmit} />
                   <WeatherInfo
                     cityName={cityName}
                     geoCoords={geoCoords}

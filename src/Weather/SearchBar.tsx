@@ -1,24 +1,17 @@
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export function SearchBar({
-  cityName: externalCityName,
   onSubmit,
 }: {
   cityName: string;
   onSubmit: (cityName: string) => void;
 }) {
-  const initialCityName = externalCityName || "";
+  const initialCityName = "";
 
   const [cityName, setCityName] = useState(initialCityName);
-
-  useEffect(() => {
-    if (typeof externalCityName === "string") {
-      setCityName(externalCityName);
-    }
-  }, [externalCityName]);
 
   function handleSubmit(event: React.SyntheticEvent) {
     event.preventDefault();

@@ -5,8 +5,9 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Box, LinearProgress } from "@mui/material";
 import { useState, useEffect } from "react";
-import { flexbox } from "@mui/system";
 import { URL_BACK } from "../utils/urlBack";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 interface IState {
   status: "pending" | "resolved" | "rejected" | "idle";
   weather: any | null;
@@ -25,6 +26,8 @@ export function WeatherInfo({
   };
   userToken: string;
 }) {
+  let navigate = useNavigate();
+
   const [state, setState] = useState<IState>({
     status: cityName ? "pending" : "idle",
     weather: null,
@@ -77,6 +80,28 @@ export function WeatherInfo({
     effect();
   }, [cityName]);
 
+  const addFavorite = async () => {
+    const token = window.localStorage.getItem("token");
+    if (!token) return;
+    try {
+      await axios.request({
+        method: "POST",
+        url: `${URL_BACK}/users/cities/${weather?.name}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate("/favorites");
+    } catch (error) {
+      console.log(error);
+      navigate("/favorites");
+    }
+  };
+
+  const handleAddFavorite = () => {
+    addFavorite();
+  };
+
   const myDate = new Intl.DateTimeFormat("fr-FR", {
     weekday: "long",
     year: "numeric",
@@ -120,6 +145,7 @@ export function WeatherInfo({
               size="small"
               variant="contained"
               color="info"
+              onClick={handleAddFavorite}
             >
               Ajouter a vos favoris
             </Button>
