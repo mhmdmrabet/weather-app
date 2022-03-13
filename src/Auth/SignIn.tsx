@@ -1,5 +1,4 @@
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from "react";
 import Button from "@mui/material/Button";
@@ -13,14 +12,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { URL_BACK } from "../utils/urlBack";
+import { login } from "../api";
+import { IFormInput } from "../type";
 
 const theme = createTheme();
-
-type IFormInput = {
-  email: string;
-  password: string;
-};
 
 export function SignIn({
   setUserToken,
@@ -30,21 +25,24 @@ export function SignIn({
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(
+    "This is a error alert — check it out!"
+  );
 
   let navigate = useNavigate();
 
   async function signIn(data: { email: string; password: string }) {
-    try {
-      const response = await axios.post(`${URL_BACK}/login`, data);
-      if (response.status === 200) {
-        setUserToken(response.data.token);
-        navigate("/");
-      } else {
-        throw new Error("Error");
+    const result = await login(data);
+    if (result.error) {
+      if (typeof result.error === "string") {
+        setErrorMsg(result.error);
       }
-    } catch (error) {
       setError(true);
       reset({ email: "", password: "" });
+    }
+    if (result.data) {
+      setUserToken(result.data.token);
+      navigate("/");
     }
   }
 
@@ -141,7 +139,7 @@ export function SignIn({
       </Container>
       {error && (
         <Alert severity="error" color="error">
-          This is a error alert — check it out!
+          {errorMsg}
         </Alert>
       )}
     </ThemeProvider>
