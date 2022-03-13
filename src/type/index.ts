@@ -1,8 +1,9 @@
-export interface IFormInput {
+export interface IFormInput extends ICredentials {}
+
+export interface ICredentials {
   email: string;
   password: string;
 }
-
 export interface ILogin {
   data: {
     token: string;

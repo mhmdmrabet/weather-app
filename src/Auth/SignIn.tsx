@@ -12,8 +12,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { login } from "../api";
-import { IFormInput } from "../type";
+import { APILogin } from "../api";
+import { ICredentials, IFormInput } from "../type";
 
 const theme = createTheme();
 
@@ -31,8 +31,8 @@ export function SignIn({
 
   let navigate = useNavigate();
 
-  async function signIn(data: { email: string; password: string }) {
-    const result = await login(data);
+  async function signIn(data: ICredentials) {
+    const result = await APILogin(data);
     if (result.error) {
       if (typeof result.error === "string") {
         setErrorMsg(result.error);

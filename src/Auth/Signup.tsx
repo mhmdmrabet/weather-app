@@ -12,15 +12,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Alert, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import axios from "axios";
-import { URL_BACK } from "../utils/urlBack";
+import { IFormInput } from "../type";
+import { APISignUp } from "../api";
 
 const theme = createTheme();
-
-type IFormInput = {
-  email: string;
-  password: string;
-};
 
 export function SignUp({
   setUserToken,
@@ -30,23 +25,12 @@ export function SignUp({
   let navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(
+    "This is a error alert — check it out!"
+  );
 
-  async function signup(data: { email: string; password: string }) {
-    try {
-      const response = await axios.post(`${URL_BACK}/signup`, data);
-      if (response.status === 201) {
-        setUserToken(response.data.token);
-        navigate("/");
-      } else {
-        throw new Error("Error");
-      }
-    } catch (error) {
-      setError(true);
-      reset({ email: "", password: "" });
-    }
-  }
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
 
   const {
     register,
@@ -54,8 +38,19 @@ export function SignUp({
     formState: { errors },
     reset,
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
-    signup(data);
+  const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
+    const result = await APISignUp(data);
+    if (result.error) {
+      if (typeof result.error === "string") {
+        setErrorMsg(result.error);
+      }
+      setError(true);
+      reset({ email: "", password: "" });
+    }
+    if (result.data) {
+      setUserToken(result.data.data.token);
+      navigate("/");
+    }
   };
 
   return (
@@ -141,7 +136,7 @@ export function SignUp({
       </Container>
       {error && (
         <Alert severity="error" color="error">
-          This is a error alert — check it out!
+          {errorMsg}
         </Alert>
       )}
     </ThemeProvider>
