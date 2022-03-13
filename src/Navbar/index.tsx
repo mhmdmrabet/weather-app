@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import { Thermostat } from "@mui/icons-material";
-import axios from "axios";
-import { URL_BACK } from "../utils/urlBack";
+import { APILogout } from "../api";
+
 export const Navbar = ({
   user,
   setUserToken,
@@ -10,20 +10,12 @@ export const Navbar = ({
   user: string;
   setUserToken: (token: string) => void;
 }) => {
-  async function logout() {
+  const handleLogout = async () => {
     const token = window.localStorage.getItem("token");
     if (!token) return;
     setUserToken("");
-    try {
-      await axios.delete(`${URL_BACK}/logout`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const handleLogout = () => logout();
+    return await APILogout(token);
+  };
 
   return (
     <nav>

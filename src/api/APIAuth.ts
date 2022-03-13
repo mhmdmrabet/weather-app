@@ -16,3 +16,11 @@ export async function APISignUp(credentials: ICredentials) {
 
   return response;
 }
+
+export async function APILogout(token: string) {
+  const result = await resolve(
+    axios.delete(`${URL_BACK}/logout`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  );
+}
