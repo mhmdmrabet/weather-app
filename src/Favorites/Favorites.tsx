@@ -4,16 +4,23 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ClearIcon from "@mui/icons-material/Clear";
-import { Divider, IconButton, LinearProgress, Typography } from "@mui/material";
+import {
+  Alert,
+  Divider,
+  IconButton,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { URL_BACK } from "../utils/urlBack";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { APIGetUsersFavoriteCities } from "../api";
 
 interface IState {
   status: "pending" | "resolved" | "rejected" | "idle";
   cities: any | null;
-  error: unknown | null;
+  error: unknown | null | boolean;
 }
 
 export function Favorites({ onClick }: { onClick: (name: string) => void }) {
@@ -25,24 +32,30 @@ export function Favorites({ onClick }: { onClick: (name: string) => void }) {
     error: null,
   });
 
+  const [errorMsg, setErrorMsg] = useState(
+    "This is a error alert — check it out!"
+  );
+
   const { status, cities, error } = state;
 
   useEffect(() => {
     async function effect() {
       const token = window.localStorage.getItem("token");
-      try {
+
+      if (token) {
         setState({ ...state, status: "pending" });
-        const response = await axios.get(`${URL_BACK}/users/cities`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const result = await APIGetUsersFavoriteCities(token);
+        setState({
+          error: false,
+          cities: result.data?.data,
+          status: "resolved",
         });
-        if (response.status === 200) {
-          const result = await response.data;
-          setState({ ...state, cities: result, status: "resolved" });
-        } else {
-          throw new Error("Weather not found");
+        if (result.error) {
+          if (typeof result.error === "string") {
+            setErrorMsg(result.error);
+          }
+          setState({ ...state, error: true, status: "rejected" });
         }
-      } catch (error) {
-        setState({ ...state, error, status: "rejected" });
       }
     }
     effect();
@@ -118,26 +131,33 @@ export function Favorites({ onClick }: { onClick: (name: string) => void }) {
   }
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
-        borderRadius: 1,
-      }}
-    >
-      <Typography
+    <>
+      <Box
         sx={{
-          textAlign: "center",
-          fontSize: "2em",
-          fontWeight: "bold",
-          padding: 1,
+          width: "100%",
+          maxWidth: 360,
+          bgcolor: "background.paper",
+          borderRadius: 1,
         }}
       >
-        Mes favoris
-      </Typography>
-      <Divider />
-      <List dense={false}>{component}</List>
-    </Box>
+        <Typography
+          sx={{
+            textAlign: "center",
+            fontSize: "2em",
+            fontWeight: "bold",
+            padding: 1,
+          }}
+        >
+          Mes favoris
+        </Typography>
+        <Divider />
+        <List dense={false}>{component}</List>
+      </Box>
+      {error && (
+        <Alert severity="error" color="error">
+          {errorMsg}
+        </Alert>
+      )}
+    </>
   );
 }

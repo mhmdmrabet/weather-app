@@ -9,6 +9,7 @@ export async function resolve(promise: Promise<any>): Promise<IResolved> {
   try {
     resolved.data = await promise;
   } catch (error: any) {
+    console.log("🚀 ~ file: resolve.ts ~ line 12 ~ resolve ~ error", { error });
     if (typeof error.response.data.errors === "object") {
       if (Array.isArray(error.response.data.errors)) {
         const errorMsg: string = error.response.data.errors[0].message;
@@ -17,6 +18,9 @@ export async function resolve(promise: Promise<any>): Promise<IResolved> {
     } else if (typeof error.response.data === "string") {
       const errorMsg: string = error.response.data;
       resolved.error = errorMsg;
+    } else if (error.response.status === 404) {
+      const errorMsg: string = error.response.data;
+      resolved.error = "Page Not Found";
     } else {
       const errorData = error.response;
       resolved.error = errorData;

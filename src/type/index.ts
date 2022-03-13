@@ -5,14 +5,29 @@ export interface ICredentials {
   password: string;
 }
 export interface ILogin {
-  data: {
-    token: string;
-    type: string;
-    expires_at: string;
-  };
+  token: string;
+  type: string;
+  expires_at: string;
+}
+
+export interface Icity {
+  id: number;
+  country: string;
+  city_name: string | null;
+  country_code: string | null;
+  lat: string;
+  lon: string;
+  state: string | null;
+  zip_code: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IData {
+  data: { token: string };
 }
 
 export interface IResolved {
-  data: ILogin | null;
+  data: any;
   error: {} | null | string;
 }
