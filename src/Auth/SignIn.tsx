@@ -41,7 +41,7 @@ export function SignIn({
       reset({ email: "", password: "" });
     }
     if (result.data) {
-      setUserToken(result.data.token);
+      setUserToken(result.data.data.token);
       navigate("/");
     }
   }

@@ -4,7 +4,11 @@ export interface IFormInput {
 }
 
 export interface ILogin {
-  token: string;
+  data: {
+    token: string;
+    type: string;
+    expires_at: string;
+  };
 }
 
 export interface IResolved {
