@@ -15,3 +15,17 @@ export async function APIGetUsersFavoriteCities(
 
   return response;
 }
+
+export async function APIDeleteCityFromUsersFavoriteCities(
+  token: string,
+  id: number
+): Promise<IResolved> {
+  const result = await resolve(
+    axios.delete(`${URL_BACK}/users/cities/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+  );
+  const response = await result;
+
+  return response;
+}

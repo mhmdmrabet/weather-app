@@ -39,6 +39,9 @@ export function WeatherInfo({
   const { status, weather, error } = state;
 
   useEffect(() => {
+    if (cityName) {
+      return;
+    }
     async function effect() {
       try {
         setState({ ...state, status: "pending" });

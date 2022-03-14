@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useParams } from "react-router-dom";
 import { Box } from "@mui/system";
 import { Navbar } from "./Navbar";
 import { blue } from "@mui/material/colors";

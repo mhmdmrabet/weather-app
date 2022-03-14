@@ -10,7 +10,13 @@ export interface ILogin {
   expires_at: string;
 }
 
-export interface Icity {
+export interface IFavoriteState {
+  status: "pending" | "resolved" | "rejected" | "idle";
+  cities: any | null | ICity[];
+  error: unknown | null | boolean;
+}
+
+export interface ICity {
   id: number;
   country: string;
   city_name: string | null;
