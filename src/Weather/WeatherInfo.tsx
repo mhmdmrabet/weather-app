@@ -3,11 +3,12 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Box, LinearProgress } from "@mui/material";
+import { Alert, Box, LinearProgress } from "@mui/material";
 import { useState, useEffect } from "react";
 import { URL_BACK } from "../utils/urlBack";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { APIGetWeatherByGeoCoords } from "../api";
 interface IState {
   status: "pending" | "resolved" | "rejected" | "idle";
   weather: any | null;
@@ -34,6 +35,10 @@ export function WeatherInfo({
     error: null,
   });
 
+  const [errorMsg, setErrorMsg] = useState(
+    "This is a error alert — check it out!"
+  );
+
   const { latitude, longitude } = geoCoords;
 
   const { status, weather, error } = state;
@@ -43,20 +48,22 @@ export function WeatherInfo({
       return;
     }
     async function effect() {
-      try {
-        setState({ ...state, status: "pending" });
-        const response = await fetch(
-          `${URL_BACK}/weather/?lon=${longitude}&lat=${latitude}`
-        );
-        if (response.ok) {
-          const result = await response.json();
-          setState({ ...state, weather: result, status: "resolved" });
-        } else {
-          throw new Error("Weather not found");
+      setState({ ...state, status: "pending" });
+      const result = await APIGetWeatherByGeoCoords(longitude, latitude);
+      if (result.error) {
+        setState({ ...state, error: true, status: "rejected" });
+        if (result.error === "Location not found") {
+          setErrorMsg(
+            "Aucune ville n'a été trouvé. Veuillez permettre la géolocalisation ou indiquer le nom d'une ville."
+          );
         }
-      } catch (error) {
-        setState({ ...state, error, status: "rejected" });
       }
+      setState({
+        ...state,
+        weather: result.data.data,
+        status: "resolved",
+        error: false,
+      });
     }
     effect();
     return;
@@ -168,5 +175,14 @@ export function WeatherInfo({
       break;
   }
 
-  return <Card sx={{ width: 350, minHeight: 400 }}>{component}</Card>;
+  return (
+    <>
+      <Card sx={{ width: 350, minHeight: 400 }}>{component}</Card>
+      {error && (
+        <Alert severity="error" color="error">
+          {errorMsg}
+        </Alert>
+      )}
+    </>
+  );
 }

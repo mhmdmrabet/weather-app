@@ -9,10 +9,14 @@ export async function resolve(promise: Promise<any>): Promise<IResolved> {
   try {
     resolved.data = await promise;
   } catch (error: any) {
-    console.log("🚀 ~ file: resolve.ts ~ line 12 ~ resolve ~ error", { error });
     if (typeof error.response.data.errors === "object") {
       if (Array.isArray(error.response.data.errors)) {
         const errorMsg: string = error.response.data.errors[0].message;
+        resolved.error = errorMsg;
+      }
+    } else if (typeof error.response.data === "object") {
+      if (error.response.data.message) {
+        const errorMsg: string = error.response.data.message;
         resolved.error = errorMsg;
       }
     } else if (typeof error.response.data === "string") {
